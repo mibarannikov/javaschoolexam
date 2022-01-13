@@ -9,7 +9,7 @@ import java.util.Stack;
 public class Calculator {
 
     public static void main(String[] args) {
-        System.out.println(new Calculator().evaluate("((1+2)-)"));
+        System.out.println(new Calculator().evaluate("((1+2)-(6+7))*(7+8)"));
     }
 
     public Double operation(String operation, Double arg1, String arg2s) throws Exception {
