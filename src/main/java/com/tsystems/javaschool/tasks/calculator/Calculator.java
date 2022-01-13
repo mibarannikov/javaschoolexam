@@ -9,7 +9,7 @@ import java.util.Stack;
 public class Calculator {
 
     public static void main(String[] args) {
-        System.out.println(new Calculator().evaluate("5*(1+1)*((5+5)*(5+5)(-1))"));
+        System.out.println(new Calculator().evaluate("5*(1+1)*((5+5)*(5+5)*(-1))"));
     }
 
     public Double operation(String operation, Double arg1, String arg2s) throws Exception {
@@ -79,7 +79,9 @@ public class Calculator {
                             if (!calculationResultStack.empty()) {
                                 CalculationResult calculationResult = calculationResultStack.pop();
                                 try {
-                                    result = operation(calculationResult.getSign(), calculationResult.getResult(), Double.toString(result));
+                                    result = operation(calculationResult.getSign(),
+                                            calculationResult.getResult(),
+                                            Double.toString(result));
                                 } catch (Exception e) {
                                     return null;
                                 }
@@ -102,7 +104,7 @@ public class Calculator {
                                 argument += charsOfStatementQueue.pop();
                             }
                             try {
-                                result = operation("*", 1.0, argument);// может быть просто присвоение
+                                result = operation("*", 1.0, argument);
                             } catch (Exception e) {
                                 return null;
                             }
@@ -128,51 +130,43 @@ public class Calculator {
                     break;
                 }
                 case '(': {
-                    int closeParentheses = 0;
-                    int openParentheses = 0;
+                    int parentheses = 0;
                     for (int k = i + 1; k < statement.length(); k++) {
-                        char localArg = statement.charAt(k);
-                        if (localArg == ')') closeParentheses++;
-                        if (localArg == '(') openParentheses++;
-                        if (closeParentheses > openParentheses) {
-                            char[] dst = new char[k - i - 1];
-                            statement.getChars(i + 1, k, dst, 0);
-                            String statementR = new String(dst);
-                            char[] begin = new char[i];
-                            char[] end = new char[statement.length() - k - 1];
-                            statement.getChars(0, i, begin, 0);
-                            statement.getChars(k + 1, statement.length(), end, 0);
-                            String str = evaluate(statementR);
-                            if (str.charAt(0) == '-' & (begin[i - 1] == '*' | begin[i - 1] == '/')) {
+                        if (statement.charAt(k) == ')') parentheses++;
+                        if (statement.charAt(k) == '(') parentheses--;
+                        if (parentheses > 0) {
+                            String str = evaluate(statement.substring(i + 1, k));
+                            String strBegin = statement.substring(0, i);
+                            String strEnd = statement.substring(k + 1);
+                            if (str.charAt(0) == '-' & (strBegin.charAt(i - 1) == '*' | strBegin.charAt(i - 1) == '/')) {
                                 result = result * (-1);
                                 str = str.substring(1);
                             }
-                            if (str.charAt(0) == '-' & begin[i - 1] == '+') {
-                                begin[i - 1] = '-';
+                            if (str.charAt(0) == '-' & strBegin.charAt(i - 1) == '+') {
+                                strBegin = strBegin.substring(0, i - 1) + '-';
                                 charsOfStatementQueue.pop();
                                 charsOfStatementQueue.push("-");
                                 str = str.substring(1);
                             }
-                            if (str.charAt(0) == '-' & begin[i - 1] == '-') {
-                                begin[i - 1] = '+';
+                            if (str.charAt(0) == '-' & strBegin.charAt(i - 1) == '-') {
+                                strBegin = strBegin.substring(0, i - 1) + '+';
                                 charsOfStatementQueue.pop();
                                 charsOfStatementQueue.push("+");
                                 str = str.substring(1);
                             }
-                            statement = new String(begin) + str + new String(end);
+                            statement = strBegin + str + strEnd;
                             i--;
                             break;
                         }
-
                     }
-                    if (closeParentheses <= openParentheses) return null;
+                    if (parentheses <= 0) return null;
                     break;
                 }
-                case ')': case',':
+                case ')':
+                case ',':
                     return null;
                 case ' ':
                     break;
-                //case 'g': return null;
                 default:
                     charsOfStatementQueue.add(Character.toString(arg));
                     break;
