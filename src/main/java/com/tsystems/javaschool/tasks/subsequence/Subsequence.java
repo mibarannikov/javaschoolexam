@@ -16,7 +16,7 @@ public class Subsequence {
      * @return <code>true</code> if possible, otherwise <code>false</code>
      */
     @SuppressWarnings("rawtypes")
-    public boolean find(List x, List y) throws IllegalArgumentException {
+    public boolean find(List x, List y) {
         if (x == null | y == null) throw new IllegalArgumentException();
         if (x.size() == 0) {
             return true;
@@ -28,13 +28,11 @@ public class Subsequence {
         for (int j = 0; j < y.size(); j++) {
             if (x.get(i).equals(y.get(j))) {
                 i++;
+                if (i == x.size() - 1) {
+                    return true;
+                }
             }
-            if (i == x.size() - 1) {
-                return true;
-            }
-
         }
-
         return false;
     }
 }
