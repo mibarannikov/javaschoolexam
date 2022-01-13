@@ -9,7 +9,7 @@ import java.util.Stack;
 public class Calculator {
 
     public static void main(String[] args) {
-        System.out.println(new Calculator().evaluate("5*(1+1)*((5+5)*(5+5)*(-1))"));
+        System.out.println(new Calculator().evaluate("((1+2)-)"));
     }
 
     public Double operation(String operation, Double arg1, String arg2s) throws Exception {
@@ -138,21 +138,25 @@ public class Calculator {
                             String str = evaluate(statement.substring(i + 1, k));
                             String strBegin = statement.substring(0, i);
                             String strEnd = statement.substring(k + 1);
-                            if (str.charAt(0) == '-' & (strBegin.charAt(i - 1) == '*' | strBegin.charAt(i - 1) == '/')) {
-                                result = result * (-1);
-                                str = str.substring(1);
-                            }
-                            if (str.charAt(0) == '-' & strBegin.charAt(i - 1) == '+') {
-                                strBegin = strBegin.substring(0, i - 1) + '-';
-                                charsOfStatementQueue.pop();
-                                charsOfStatementQueue.push("-");
-                                str = str.substring(1);
-                            }
-                            if (str.charAt(0) == '-' & strBegin.charAt(i - 1) == '-') {
-                                strBegin = strBegin.substring(0, i - 1) + '+';
-                                charsOfStatementQueue.pop();
-                                charsOfStatementQueue.push("+");
-                                str = str.substring(1);
+                            try {
+                                if (str.charAt(0) == '-' & (strBegin.charAt(i - 1) == '*' | strBegin.charAt(i - 1) == '/')) {
+                                    result = result * (-1);
+                                    str = str.substring(1);
+                                }
+                                if (str.charAt(0) == '-' & strBegin.charAt(i - 1) == '+') {
+                                    strBegin = strBegin.substring(0, i - 1) + '-';
+                                    charsOfStatementQueue.pop();
+                                    charsOfStatementQueue.push("-");
+                                    str = str.substring(1);
+                                }
+                                if (str.charAt(0) == '-' & strBegin.charAt(i - 1) == '-') {
+                                    strBegin = strBegin.substring(0, i - 1) + '+';
+                                    charsOfStatementQueue.pop();
+                                    charsOfStatementQueue.push("+");
+                                    str = str.substring(1);
+                                }
+                            }catch(NullPointerException e){
+                                return null;
                             }
                             statement = strBegin + str + strEnd;
                             i--;
