@@ -156,7 +156,7 @@ public class Calculator {
                                     charsOfStatementQueue.push("+");
                                     str = str.substring(1);
                                 }
-                            }catch(NullPointerException e){
+                            } catch (NullPointerException e) {
                                 return null;
                             }
                             statement = strBegin + str + strEnd;
@@ -184,8 +184,8 @@ public class Calculator {
     }
 
     class CalculationResult {
-        private final Double Result;
-        private final String sign;
+        private Double Result;
+        private String sign;
 
         public CalculationResult(Double res, String sign) {
             this.Result = res;
