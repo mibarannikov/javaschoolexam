@@ -13,7 +13,7 @@ public class Calculator {
     }
 
 
-    public Double operation(String operation, Double arg1, String arg2s) throws Exception {
+    public Double operation(String operation, Double arg1, String arg2s) {
         Double arg2;
         arg2 = new Double(arg2s);
         switch (operation) {
@@ -25,7 +25,7 @@ public class Calculator {
                 return arg1 * arg2;
             case "/": {
                 double res;
-                if (arg2 == 0) throw new Exception();
+                if (arg2 == 0) throw new RuntimeException();
                 res = arg1 / arg2;
                 return res;
             }
@@ -183,26 +183,25 @@ public class Calculator {
         return decimalFormat.format(result);
     }
 
-    class CalculationResult {
-        private Double Result;
-        private String sign;
-
-        public CalculationResult(Double res, String sign) {
-            this.Result = res;
-            this.sign = sign;
-        }
-
-        public Double getResult() {
-            return Result;
-        }
-
-        public String getSign() {
-            return sign;
-        }
-    }
 }
 
+class CalculationResult {
+    private Double Result;
+    private String sign;
 
+    public CalculationResult(Double res, String sign) {
+        this.Result = res;
+        this.sign = sign;
+    }
+
+    public Double getResult() {
+        return Result;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+}
 
 
 

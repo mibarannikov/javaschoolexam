@@ -27,10 +27,10 @@ public class Subsequence {
         int i = 0;
         for (int j = 0; j < y.size(); j++) {
             if (x.get(i).equals(y.get(j))) {
-                i++;
                 if (i == x.size() - 1) {
                     return true;
                 }
+                i++;
             }
         }
         return false;
