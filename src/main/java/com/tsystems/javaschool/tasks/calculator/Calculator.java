@@ -13,7 +13,7 @@ public class Calculator {
     }
 
 
-    public Double operation(String operation, Double arg1, String arg2s) {
+    private Double operation(String operation, Double arg1, String arg2s) {
         Double arg2;
         arg2 = new Double(arg2s);
         switch (operation) {
