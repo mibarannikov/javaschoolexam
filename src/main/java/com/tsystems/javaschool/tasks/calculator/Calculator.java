@@ -12,6 +12,7 @@ public class Calculator {
         System.out.println(new Calculator().evaluate("((1+2)-(6+7))*(7+8)"));
     }
 
+
     public Double operation(String operation, Double arg1, String arg2s) throws Exception {
         Double arg2;
         arg2 = new Double(arg2s);
